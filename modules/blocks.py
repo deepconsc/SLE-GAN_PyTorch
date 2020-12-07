@@ -59,6 +59,7 @@ class UpSamplingBlock(nn.Module):
         x = self.conv2d(x)
         x = self.batchnorm(x)
         x = self.glu(x)
+	return x
 
 
 class SkipLayerExcitationBlock(nn.Module):
