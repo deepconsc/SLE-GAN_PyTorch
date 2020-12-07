@@ -1,5 +1,5 @@
 import torch.nn as nn
-from models.blocks import GLU, InputBlock, OutputBlock, UpSamplingBlock, SkipLayerExcitationBlock
+from models.generator_blocks import GLU, InputBlock, OutputBlock, UpSamplingBlock, SkipLayerExcitationBlock
 
 class Generator(nn.Module):
     def __init__(self, out_resolution):
