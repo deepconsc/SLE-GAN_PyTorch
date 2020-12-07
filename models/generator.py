@@ -1,3 +1,4 @@
+import torch.nn as nn
 from models.blocks import GLU, InputBlock, OutputBlock, UpSamplingBlock, SkipLayerExcitationBlock
 
 class Generator(nn.Module):
