@@ -1,7 +1,7 @@
 import torch.nn as nn 
 import torch
 import torch.nn.functional as F
-from models.disc_blocks import InputBlock, DownSamplingBlock, Decoder, RealFakeOutputBlock
+from modules.disc_blocks import InputBlock, DownSamplingBlock, Decoder, RealFakeOutputBlock
 from random import randint
 
 class Discriminator(nn.Module):
