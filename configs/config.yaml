@@ -1,7 +1,7 @@
 train:
     folder: 'dummy'
     device: 'cuda'
-    parallel: no
+    parallel: False
     resolution: 512
     batch_size: 16
     num_workers: 8
