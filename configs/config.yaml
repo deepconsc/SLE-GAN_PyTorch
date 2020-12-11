@@ -1,7 +1,7 @@
 train:
     folder: 'dummy'
     device: 'cuda'
-    parallel: no
+    parallel: False
     resolution: 512
     batch_size: 16
     num_workers: 8
@@ -20,3 +20,9 @@ log:
     save_everything: yes # whether save all modules or just generator
     chkpt_dir: 'chkpt'
     log_dir: 'tensorboard'
+
+dataset:
+    pets: 'https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz'
+    flowers_102: 'https://www.robots.ox.ac.uk/~vgg/data/flowers/102/102flowers.tgz'
+    birds: 'https://www.robots.ox.ac.uk/~vgg/data/bicos/data/birds.tar'
+    sculptures: 'https://www.robots.ox.ac.uk/~vgg/data/sculptures6k/sculptures6k.tar.gz'

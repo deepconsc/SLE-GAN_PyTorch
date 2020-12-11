@@ -51,7 +51,7 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, dev
         with torch.no_grad():
             noise = N.sample([num_samples, 1, 1, 256]).squeeze(-1).to(torch.device(device))
             images = generator(noise).detach().cpu()
-            img_array = [img.squeeze(0).transpose(2,0,1).numpy() for img in images]
+            img_array = [(img.squeeze(0).transpose(2,0,1).numpy() * 127.5) + 127.5 for img in images]
 
     if epoch % save_freq == 0:
         if save_everything:
