@@ -1,0 +1,22 @@
+train:
+    folder: 'dummy'
+    device: 'cuda'
+    parallel: no
+    resolution: 512
+    batch_size: 16
+    num_workers: 8
+    
+
+optimizer:
+    lr: 0.001
+    beta_1: 0.5
+    beta_2: 0.9
+    amsgrad: False
+
+log:
+    log_interval: 5
+    num_samples: 8
+    save_freq: 1
+    save_everything: yes # whether save all modules or just generator
+    chkpt_dir: 'chkpt'
+    log_dir: 'tensorboard'
