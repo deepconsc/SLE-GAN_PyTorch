@@ -1,11 +1,11 @@
 import torch 
 from torch.distributions import normal
 from random import randint 
-
+from torch.nn import functional as F
 
 N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
 
-def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, device, log_interval):
+def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, device, log_interval, resolution, num_samples, save_everything):
     for epoch in range(1, n_epochs+1):
         loader = tqdm.tqdm(trainloader, desc='Loading train data')
         randomspace = [randint(4,12) for i in range(len(trainloader))]  # Generating random numbers for random crop on the fly, instead of overengineering dataloader & discriminator
@@ -29,10 +29,12 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, dev
 
 
             # Discriminator 
+            ratio = resolution/16  # 16 because of decoder module input size is (B, 256, 16, 16) in discriminator
 
             real_logits, real_absolute, real_randcrop = model_d(img_D, randn)
             reconst_loss_absolute = losses.reconstruction_loss(img_L, real_absolute) # Absolute image reconstruction loss
-            reconst_loss_randcrop = losses.reconstruction_loss(img_L[:,:,randn-4:randn+4,randn-4:randn+4], real_randcrop) # Random cropped image reconstruction loss
+            xy0, xy1 = int((rand-4)*ratio), int((rand+4)*ratio) # Calculate random crop proportions in prior
+            reconst_loss_randcrop = losses.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop) # Random cropped image reconstruction loss
             disc_loss = losses.disc_loss(real_logits, fake_logits)
             
             disc_total_loss = reconst_loss_absolute + reconst_loss_randcrop + disc_loss
@@ -47,9 +49,20 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, dev
         # Generating samples at the end of the epoch
 
         with torch.no_grad():
-            noise = N.sample([img_L.shape[0], 1, 1, 256]).squeeze(-1).to(torch.device(device))
+            noise = N.sample([num_samples, 1, 1, 256]).squeeze(-1).to(torch.device(device))
             images = generator(noise).detach().cpu()
             img_array = [img.squeeze(0).transpose(2,0,1).numpy() for img in images]
 
+    if epoch % save_freq == 0:
+        if save_everything:
+            torch.save({
+                    'generator': generator.state_dict(),
+                    'discriminator': discriminator.state_dict(),
+                    'optim_g': optim_g.state_dict(),
+                    'optim_d': optim_d.state_dict(),
+                    'step': epoch,
+                }, f'logs/{logging_dir}/model_epoch_{epoch}.pth')
+        else:
+            torch.save({'generator': generator.state_dict()}, f'logs/{logging_dir}/model_epoch_{epoch}.pth')
 
 
