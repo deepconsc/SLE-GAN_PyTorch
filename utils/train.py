@@ -1,8 +1,4 @@
-from models.generator import Generator 
-from models.discriminator import Discriminator
 import torch 
-from torch import nn 
-from torch.nn import functional as F 
 from torch.distributions import normal
 from random import randint 
 
@@ -54,6 +50,6 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, dev
             noise = N.sample([img_L.shape[0], 1, 1, 256]).squeeze(-1).to(torch.device(device))
             images = generator(noise).detach().cpu()
             img_array = [img.squeeze(0).transpose(2,0,1).numpy() for img in images]
-            
+
 
 
