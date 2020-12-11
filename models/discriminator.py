@@ -27,7 +27,7 @@ class Discriminator(nn.Module):
         self.logits = RealFakeOutputBlock(in_channels=512, out_channels=1)
 
  
-    def forward(self, x):
+    def forward(self, x, random):
         x = self.input_block(x)  # --> (B, 8/16/32, 256, 256)
         x = self.downsample_128(x)  # --> (B, 64, 128, 128)
         x = self.downsample_64(x)  # --> (B, 128, 64, 64)
@@ -35,8 +35,9 @@ class Discriminator(nn.Module):
         x_16 = self.downsample_16(x)  # --> (B, 256, 16, 16)
         x_8 = self.downsample_8(x_16)  # --> (B, 512, 8, 8)
 
-        random = randint(4,12)
+        #random = randint(4,12)
         x_image_decoded_128_x_16 = self.decoder_image_part(x_16[:,:,random-4:random+4,random-4:random+4])  # --> (B, 3, 128, 128)
+        #x_image_decoded_128_x_16 = self.decoder_image_part(x_16[:,:,4:12,4:12])  # --> (B, 3, 128, 128)
         x_image_decoded_128_x_8 = self.decoder_image(x_8)  # --> (B, 3, 128, 128)
 
         logits = self.logits(x_8)  # --> (B, 1, 5, 5)
