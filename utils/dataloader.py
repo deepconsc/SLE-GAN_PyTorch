@@ -19,14 +19,13 @@ class DataSampler(Dataset):
             image = cv2.imread(image_name)
             image = cv2.resize(image, (self.size, self.size))
             image = torch.from_numpy(image)
-            image = (image.permute(2,0,1) - 127.5) / 127.5
+            image = (image.permute(2,0,1) - [0.5, 0.5, 0.5]) / [0.5, 0.5, 0.5]
         except cv2.error:
             image_name = self.input_images[idx+1]
             image = cv2.imread(image_name)
             image = cv2.resize(image, (self.size, self.size))
             image = torch.from_numpy(image)
-            image = (image.permute(2,0,1) - 127.5) / 127.5
-
+            image = (image.permute(2,0,1) - [0.5, 0.5, 0.5]) / [0.5, 0.5, 0.5]
 
         return [image, image.clone()]
     

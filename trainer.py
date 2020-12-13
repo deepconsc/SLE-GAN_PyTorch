@@ -42,11 +42,11 @@ amsgrad = config['optimizer']['amsgrad']
 trainloader = DataSampler.build(path, batch_size, num_workers, resolution)
 
 generator = Generator(resolution).to(device)
-optim_g = optim.Adam(generator.parameters(), lr=lr)
+optim_g = optim.Adam(generator.parameters(), lr=lr, betas=(beta1, beta2))
 
 
 discriminator = Discriminator(resolution).to(device)
-optim_d = optim.Adam(discriminator.parameters(), lr=lr)
+optim_d = optim.Adam(discriminator.parameters(), lr=lr, betas=(beta1, beta2))
 
 
 
