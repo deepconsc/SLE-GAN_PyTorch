@@ -6,6 +6,7 @@ from torch.nn import functional as F
 from utils.loss import Loss 
 import cv2 
 import lpips
+from torch.autograd import Variable
 
 
 #N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
@@ -41,9 +42,9 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             xy0, xy1 = int((randn-4)*ratio), int((randn+4)*ratio) 
 
             real_logits, real_absolute, real_randcrop = discriminator(img_D, randn)
-            reconst_loss_real = F.relu(torch.rand_like(real_logits) * 0.2 + 0.8 - real_logits).mean() + perceptual(F.interpolate(img_L, size=(128,128)), real_absolute) + perceptual(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop)
+            reconst_loss_real = Variable(F.relu(torch.rand_like(real_logits) * 0.2 + 0.8 - real_logits).mean() + perceptual(F.interpolate(img_L, size=(128,128)), real_absolute) + perceptual(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop), requires_grad=True)
             #reconst_loss_absolute = Loss.reconstruction_loss(F.interpolate(img_L, size=(128,128)).cpu(), real_absolute.cpu()) # Absolute image reconstruction loss
-            reconst_loss_fake = F.relu(torch.rand_like(real_logits) * 0.2 + 0.8 + real_logits).mean()
+            reconst_loss_fake = Variable(F.relu(torch.rand_like(real_logits) * 0.2 + 0.8 + real_logits).mean(), requires_grad=True)
             # Calculate random crop proportions in prior
             #reconst_loss_randcrop = Loss.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)).cpu(), real_randcrop.cpu()) # Random cropped image reconstruction loss
             
