@@ -6,7 +6,7 @@ from torch.nn import functional as F
 from utils.loss import Loss 
 import cv2 
 
-N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
+#N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
 
 def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, device, log_interval, logging_dir, save_freq, checkpoint_dir, resolution, num_samples, save_everything):
     for epoch in range(1, n_epochs+1):
@@ -16,8 +16,8 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             randn = randomspace[iter] # Random by iter
             img_L, img_D = batch
             img_L, img_D = img_L.to(device), img_D.to(device)
-            noise = N.sample([img_L.shape[0], 256, 1]).to(torch.device(device)) # Sample normal distribution noise
-
+            #noise = N.sample([img_L.shape[0], 256, 1]).to(torch.device(device)) # Sample normal distribution noise
+            noise = torch.randn(img_L.shape[0], 256, 1).to(device)
             # Generator 
 
             optim_g.zero_grad()
@@ -53,7 +53,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
         # Generating samples at the end of the epoch
 
         with torch.no_grad():
-            noise = N.sample([num_samples, 256, 1]).to(torch.device(device))
+            noise = noise = torch.randn(img_L.shape[0], 256, 1).to(device).to(device)
             images = generator(noise).detach().cpu()
             img_array = [(img.squeeze(0).permute(1,2,0).numpy() * 127.5) + 127.5 for img in images]
             for i in range(8):
