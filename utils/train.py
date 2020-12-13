@@ -57,7 +57,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             images = generator(noise).detach().cpu()
             img_array = [(img.squeeze(0).permute(1,2,0).numpy() * 127.5) + 127.5 for img in images]
             for i in range(8):
-                cv2.imwrite(f'logs/tensorboard/{i}.png', img_array[i])
+                cv2.imwrite(f'logs/tensorboard/{epoch}epoch_{i}.png', img_array[i])
 
     if epoch % save_freq == 0:
         if save_everything:
