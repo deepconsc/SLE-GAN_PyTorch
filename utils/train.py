@@ -6,10 +6,6 @@ from torch.nn import functional as F
 from utils.loss import Loss 
 
 N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
-    
-reconstruction_loss = Loss.reconstruction_loss()
-disc_loss = Loss.disc_loss()
-generator_loss = Loss.generator_loss()
 
 def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, device, log_interval, logging_dir, save_freq, checkpoint_dir, resolution, num_samples, save_everything):
     for epoch in range(1, n_epochs+1):
@@ -30,7 +26,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             fake_logits, fake_absolute, fake_randcrop = discriminator(fake_images, randn) 
             fake_logits_G = fake_logits.detach()
 
-            gen_loss = losses.generator_loss(fake_logits_G)
+            gen_loss = Loss.generator_loss(fake_logits_G)
             gen_loss.backward()
             optim_g.step()
 
@@ -39,10 +35,10 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             ratio = resolution/16  # 16 because of decoder module input size is (B, 256, 16, 16) in discriminator
 
             real_logits, real_absolute, real_randcrop = discriminator(img_D, randn)
-            reconst_loss_absolute = losses.reconstruction_loss(img_L, real_absolute) # Absolute image reconstruction loss
+            reconst_loss_absolute = Loss.reconstruction_loss(img_L, real_absolute) # Absolute image reconstruction loss
             xy0, xy1 = int((rand-4)*ratio), int((rand+4)*ratio) # Calculate random crop proportions in prior
-            reconst_loss_randcrop = losses.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop) # Random cropped image reconstruction loss
-            disc_loss = losses.disc_loss(real_logits, fake_logits)
+            reconst_loss_randcrop = Loss.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop) # Random cropped image reconstruction loss
+            disc_loss = Loss.disc_loss(real_logits, fake_logits)
             
             disc_total_loss = reconst_loss_absolute + reconst_loss_randcrop + disc_loss
 
