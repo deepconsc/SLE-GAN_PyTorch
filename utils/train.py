@@ -22,7 +22,7 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, n_e
             fake_images = generator(noise)
             fake_L = fake_images.detach() 
 
-            fake_logits, fake_absolute, fake_randcrop = model_d(fake_images, randn) 
+            fake_logits, fake_absolute, fake_randcrop = discriminator(fake_images, randn) 
             fake_logits_G = fake_logits.detach()
 
             gen_loss = losses.generator_loss(fake_logits_G)
@@ -33,7 +33,7 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, n_e
             # Discriminator 
             ratio = resolution/16  # 16 because of decoder module input size is (B, 256, 16, 16) in discriminator
 
-            real_logits, real_absolute, real_randcrop = model_d(img_D, randn)
+            real_logits, real_absolute, real_randcrop = discriminator(img_D, randn)
             reconst_loss_absolute = losses.reconstruction_loss(img_L, real_absolute) # Absolute image reconstruction loss
             xy0, xy1 = int((rand-4)*ratio), int((rand+4)*ratio) # Calculate random crop proportions in prior
             reconst_loss_randcrop = losses.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop) # Random cropped image reconstruction loss
