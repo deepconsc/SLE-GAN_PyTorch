@@ -5,7 +5,7 @@ from torch.nn import functional as F
 
 N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
 
-def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, device, log_interval, logging_dir, save_freq, checkpoint_dir, resolution, num_samples, save_everything)
+def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, device, log_interval, logging_dir, save_freq, checkpoint_dir, resolution, num_samples, save_everything):
     for epoch in range(1, n_epochs+1):
         loader = tqdm.tqdm(trainloader, desc='Loading train data')
         randomspace = [randint(4,12) for i in range(len(trainloader))]  # Generating random numbers for random crop on the fly, instead of overengineering dataloader & discriminator
