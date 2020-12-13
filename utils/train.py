@@ -69,7 +69,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             noise = noise = torch.randn(img_L.shape[0], 256, 1, 1).to(device).to(device)
             noise /= torch.max(noise)
             images = generator(noise).detach().cpu()
-            img_array = [img.squeeze(0).add(1).mul(0.5).permute(1,2,0).numpy() for img in images]
+            img_array = [img.squeeze(0).add(1).mul(0.5).permute(1,2,0).numpy()*255 for img in images]
             for i in range(8):
                 cv2.imwrite(f'logs/tensorboard/{epoch}epoch_{i}.png', img_array[i])
 
