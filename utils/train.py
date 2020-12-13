@@ -20,7 +20,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             img_L, img_D = batch
             img_L, img_D = img_L.to(device), img_D.to(device)
             #noise = N.sample([img_L.shape[0], 256, 1]).to(torch.device(device)) # Sample normal distribution noise
-            noise = torch.randn(img_L.shape[0], 256, 1).to(device)
+            noise = torch.randn(img_L.shape[0], 256, 1, 1).to(device)
             noise /= torch.max(noise)
             # Generator 
 
@@ -63,7 +63,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
         # Generating samples at the end of the epoch
 
         with torch.no_grad():
-            noise = noise = torch.randn(img_L.shape[0], 256, 1).to(device).to(device)
+            noise = noise = torch.randn(img_L.shape[0], 256, 1, 1).to(device).to(device)
             noise /= torch.max(noise)
             images = generator(noise).detach().cpu()
             img_array = [img.squeeze(0).add(1).mul(0.5).permute(1,2,0).numpy() for img in images]
