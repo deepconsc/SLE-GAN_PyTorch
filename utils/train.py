@@ -43,10 +43,8 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
 
             real_logits, real_absolute, real_randcrop = discriminator(img_D, randn)
             reconst_loss_real = Variable(F.relu(torch.rand_like(real_logits) * 0.2 + 0.8 - real_logits).mean() + perceptual(F.interpolate(img_L, size=(128,128)), real_absolute) + perceptual(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop), requires_grad=True).mean()
-            print(reconst_loss_real)
             #reconst_loss_absolute = Loss.reconstruction_loss(F.interpolate(img_L, size=(128,128)).cpu(), real_absolute.cpu()) # Absolute image reconstruction loss
             reconst_loss_fake = Variable(F.relu(torch.rand_like(real_logits) * 0.2 + 0.8 + real_logits).mean(), requires_grad=True).mean()
-            print(reconst_loss_fake)
 
             # Calculate random crop proportions in prior
             #reconst_loss_randcrop = Loss.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)).cpu(), real_randcrop.cpu()) # Random cropped image reconstruction loss
@@ -58,11 +56,12 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             #disc_total_loss.backward()
             reconst_loss_real.backward()
             reconst_loss_fake.backward()
+            total_d_loss = reconst_loss_real + reconst_loss_real
             optim_d.step()
 
 
             if iter % log_interval == 0:
-                loader.set_description(f"Epoch: {epoch} | G Loss: {gen_loss.item()} | D Loss: {disc_total_loss.item()} | Step: {iter}")
+                loader.set_description(f"Epoch: {epoch} | G Loss: {gen_loss.item()} | D Loss: {total_d_loss.item()} | Step: {iter}")
         
         # Generating samples at the end of the epoch
 
