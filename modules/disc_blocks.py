@@ -1,6 +1,7 @@
 import torch.nn as nn 
 import torch
 import torch.nn.functional as F
+from modules.generator_blocks import GLU
 
 class InputBlock(nn.Module):
     def __init__(self, downsampling_factor, out_channels):
