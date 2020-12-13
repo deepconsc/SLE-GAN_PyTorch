@@ -48,7 +48,6 @@ optim_g = optim.Adam(generator.parameters(), lr=lr, betas=(beta1, beta2))
 discriminator = Discriminator(resolution).to(device)
 optim_d = optim.Adam(discriminator.parameters(), lr=lr, betas=(beta1, beta2))
 
-losses = Loss()
 
 
-trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, n_epochs, device, log_interval, logging_dir, save_freq, checkpoint_dir, resolution, num_samples, save_everything)
+trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, device, log_interval, logging_dir, save_freq, checkpoint_dir, resolution, num_samples, save_everything)
