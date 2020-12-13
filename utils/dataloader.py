@@ -17,7 +17,7 @@ class DataSampler(Dataset):
         image_name = self.input_images[idx]
         image = cv2.imread(image_name)
         image = cv2.resize(image, (self.size, self.size))
-        image = torch.from_numpy(image, dtype=torch.float).transpose(2,0,1)
+        image = torch.from_numpy(image).transpose(2,0,1)
         image = (image - 127.5) / 127.5
 
         return [image, image.clone()]
