@@ -26,7 +26,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             fake_logits, fake_absolute, fake_randcrop = discriminator(fake_images, randn) 
             fake_logits_G = fake_logits.detach()
 
-            gen_loss = Loss.generator_loss(fake_logits_G)
+            gen_loss = Loss.generator_loss(fake_logits_G.cpu())
             gen_loss.backward()
             optim_g.step()
 
