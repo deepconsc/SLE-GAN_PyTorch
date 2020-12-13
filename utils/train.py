@@ -35,7 +35,7 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
             ratio = resolution/16  # 16 because of decoder module input size is (B, 256, 16, 16) in discriminator
 
             real_logits, real_absolute, real_randcrop = discriminator(img_D, randn)
-            reconst_loss_absolute = Loss.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_absolute) # Absolute image reconstruction loss
+            reconst_loss_absolute = Loss.reconstruction_loss(F.interpolate(img_L, size=(128,128)), real_absolute) # Absolute image reconstruction loss
             xy0, xy1 = int((rand-4)*ratio), int((rand+4)*ratio) # Calculate random crop proportions in prior
             reconst_loss_randcrop = Loss.reconstruction_loss(F.interpolate(img_L[:,:,xy0:xy1,xy0:xy1], size=(128,128)), real_randcrop) # Random cropped image reconstruction loss
             disc_loss = Loss.disc_loss(real_logits, fake_logits)
