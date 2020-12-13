@@ -1,16 +1,17 @@
 train:
-    folder: 'dummy'
+    folder: 'images'
     device: 'cuda'
     parallel: False
     resolution: 512
-    batch_size: 16
+    batch_size: 12
     num_workers: 8
+    epochs: 30
     
 
 optimizer:
-    lr: 0.001
+    lr: 0.0002
     beta_1: 0.5
-    beta_2: 0.9
+    beta_2: 0.9999
     amsgrad: False
 
 log:
