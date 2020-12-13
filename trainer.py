@@ -21,6 +21,7 @@ num_samples = config['log']['num_samples']
 log_interval = config['log']['log_interval']
 save_freq = config['log']['save_freq']
 save_everything = config['log']['save_everything']
+path =config['train']['folder']
 
 device = config['train']['device']
 batch_size = config['train']['batch_size']
@@ -35,7 +36,7 @@ amsgrad = config['optimizer']['amsgrad']
 
 
 
-trainloader = DataSampler.build(path=config['train']['folder'], batch_size=config['train']['batch_size'], threads=config['train']['num_workers'])
+trainloader = DataSampler.build(path, batch_size, num_workers, resolution)
 
 generator = Generator(resolution).to(device)
 optim_g = optim.Adam(generator.parameters(), lr=lr, betas=(beta1, beta2))
