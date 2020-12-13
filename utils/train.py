@@ -1,4 +1,5 @@
 import torch 
+import tqdm 
 from torch.distributions import normal
 from random import randint 
 from torch.nn import functional as F
