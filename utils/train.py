@@ -12,7 +12,8 @@ def trainer(generator, discriminator, optim_g, optim_d, losses, trainloader, n_e
         randomspace = [randint(4,12) for i in range(len(trainloader))]  # Generating random numbers for random crop on the fly, instead of overengineering dataloader & discriminator
         for iter, batch in enumerate(loader):
             randn = randomspace[iter] # Random by iter
-            img_L, img_D = batch.to(device)
+            img_L, img_D = batch
+            img_L, img_D = img_L.to(device), img_D.to(device)
             noise = N.sample([img_L.shape[0], 1, 1, 256]).squeeze(-1).to(torch.device(device)) # Sample normal distribution noise
 
             # Generator 
