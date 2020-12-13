@@ -4,6 +4,7 @@ from torch.distributions import normal
 from random import randint 
 from torch.nn import functional as F
 from utils.loss import Loss 
+import cv2 
 
 N = normal.Normal(torch.tensor([0.0]), torch.tensor([1.0])) # Initializing Normal distribution sampler
 
