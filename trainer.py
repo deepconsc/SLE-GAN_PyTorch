@@ -5,7 +5,7 @@ from utils.loss import Loss
 from utils.dataloader import DataSampler
 import glob 
 from subprocess import run
-
+from torch import optim
 tree = glob.glob('*')
 
 if 'logs' not in tree:
