@@ -29,7 +29,7 @@ device = config['train']['device']
 batch_size = config['train']['batch_size']
 num_workers = config['train']['num_workers']
 resolution = config['train']['resolution']
-n_epochs = cofig['train']['epochs']
+n_epochs = config['train']['epochs']
 
 lr = config['optimizer']['lr']
 beta1 = config['optimizer']['beta_1']
