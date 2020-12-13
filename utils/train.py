@@ -52,13 +52,12 @@ def trainer(generator, discriminator, optim_g, optim_d, trainloader, n_epochs, d
         
         # Generating samples at the end of the epoch
 
-            with torch.no_grad():
-                noise = N.sample([num_samples, 256, 1]).to(torch.device(device))
-                images = generator(noise).detach().cpu()
-                img_array = [(img.squeeze(0).permute(1,2,0).numpy() * 127.5) + 127.5 for img in images]
-                print(img_array[0].shape)
-                for i in range(8):
-                    cv2.imwrite(f'logs/tensorboard/{i}.img', img_array[i])
+        with torch.no_grad():
+            noise = N.sample([num_samples, 256, 1]).to(torch.device(device))
+            images = generator(noise).detach().cpu()
+            img_array = [(img.squeeze(0).permute(1,2,0).numpy() * 127.5) + 127.5 for img in images]
+            for i in range(8):
+                cv2.imwrite(f'logs/tensorboard/{i}.png', img_array[i])
 
     if epoch % save_freq == 0:
         if save_everything:
