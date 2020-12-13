@@ -21,7 +21,7 @@ class DataSampler(Dataset):
 
         return [image, image.clone()]
     
-    def build(path, batch_size, threads):
-        trainset = DataSampler(path, batch_size)
+    def build(path, batch_size, threads, resolution):
+        trainset = DataSampler(path, batch_size, threads, resolution)
         return Dataloader(trainset, batch_size=self.bs, shuffle=True, num_workers=self.threads)
         
