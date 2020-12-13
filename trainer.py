@@ -6,6 +6,8 @@ from utils.dataloader import DataSampler
 import glob 
 from subprocess import run
 from torch import optim
+from utils.train import trainer 
+
 tree = glob.glob('*')
 
 if 'logs' not in tree:
